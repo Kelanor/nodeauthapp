@@ -19,7 +19,7 @@ router.post('/register', (req, res, next) => {
 		if (err) {
 			res.json({ success: false,  msg: 'Failed to register user' });
 		} else {
-			res.json({ success: true,  msg: 'User registered' });
+			res.json({ success: true });
 		}
 	})
 })
@@ -34,7 +34,7 @@ router.post('/authenticate', (req, res, next) => {
 			throw err;
 
 		if (!user) {
-			return res.json({ succes: false,  msg: 'User not found' });
+			return res.json({ success: false,  msg: 'User not found' });
 		}
 
 		User.comparePassword(password, user.password, (err, isMatch) => {
@@ -47,7 +47,7 @@ router.post('/authenticate', (req, res, next) => {
 				});
 
 				res.json({
-					succes: true, 
+					success: true,
 					token: 'Bearer ' + token,
 					user: {
 						id: user._id,
@@ -57,7 +57,7 @@ router.post('/authenticate', (req, res, next) => {
 					}
 				});
 			} else {
-				return res.json({ succes: false,  msg: 'Wrong password' });
+				return res.json({ success: false,  msg: 'Wrong password' });
 			}
 		});
 	});
