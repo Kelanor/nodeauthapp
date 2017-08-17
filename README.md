@@ -1,1 +1,2 @@
 # nodeauthapp
+Sample project
