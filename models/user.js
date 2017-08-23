@@ -54,3 +54,7 @@ module.exports.comparePassword = function (password, hash, callback) {
 		callback(null, isMatch);
 	});
 }
+
+module.exports.getUsers = function (callback, limit) {
+	User.find(callback).limit(limit);
+}

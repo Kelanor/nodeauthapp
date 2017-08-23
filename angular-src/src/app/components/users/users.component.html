@@ -1,0 +1,22 @@
+<h2 class="page-header">Users</h2>
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Username</th>
+			<th width="15%"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="let user of users; let i = index">
+			<td class="align-middle">{{user.name}}</td>
+			<td class="align-middle">{{user.email}}</td>
+			<td class="align-middle">{{user.username}}</td>
+			<td>
+				<a class="btn btn-primary btn-xs" (click)="onEditClick(user.id)">Edit <i class="glyphicon glyphicon-edit"></i></a>
+				<a class="btn btn-danger btn-xs" (click)="onDeleteClick(user.id)">Delete <i class="glyphicon glyphicon-trash"></i></a>
+			</td>
+		</tr>
+	</tbody>
+</table>

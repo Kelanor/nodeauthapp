@@ -68,4 +68,36 @@ router.get('/profile', passport.authenticate('jwt', {session: false}), (req, res
 	res.json({user: req.user});
 })
 
+// List
+router.get('/list', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+	User.getUsers(function (error, users) {
+		if (error) 
+			throw error;
+
+		res.json(users.map((current, index, array) => {
+			return {
+				id: current._id,
+				name: current.name,
+				username: current.username,
+				email: current.email
+			}
+		}));
+	})
+})
+
+// List
+router.get('/:id', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+	User.getUserById(req.params.id, function (error, user) {
+		if (error) 
+			throw error;
+
+		res.json({
+				id: user._id,
+				name: user.name,
+				username: user.username,
+				email: user.email
+			});
+	})
+})
+
 module.exports = router;
