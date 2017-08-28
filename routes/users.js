@@ -101,6 +101,15 @@ router.get('/:id', passport.authenticate('jwt', {session: false}), (req, res, ne
 
 // Edit user
 router.put('/:id', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+
+	var callbackFunc = (err, user) => {
+		if (err) {
+			return res.json({ success: false,  msg: 'Failed to edit user' });
+		}
+
+		return res.json({ success: true });
+	}
+
 	User.getUserById(req.params.id, function (error, user) {
 		if (error) 
 			throw error;
@@ -119,22 +128,10 @@ router.put('/:id', passport.authenticate('jwt', {session: false}), (req, res, ne
 				}
 
 				user.password = req.body.newPassword;
-				User.editUserWithPassword(user, (err, user) => {
-					if (err) {
-						return res.json({ success: false,  msg: 'Failed to edit user' });
-					}
-
-					return res.json({ success: true });
-				});
+				User.editUserWithPassword(user, callbackFunc);
 			});
 		} else {
-			User.editUser(user, (err, user) => {
-				if (err) {
-					return res.json({ success: false,  msg: 'Failed to edit user' });
-				}
-
-				return res.json({ success: true });
-			});
+			User.editUser(user, callbackFunc);
 		}
 	})
 })
