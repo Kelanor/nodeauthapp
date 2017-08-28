@@ -1,39 +1,53 @@
 <h2 class="page-header">Edit user</h2>
 <form (submit)="onEditSubmit()">
-	<div class="col-md-6">
-		<div class="form-group">
-			<label>Name</label>
+	<div class="form-group row">
+		<label class="col-sm-2 form-control-static">Name</label>
+		<div class="col-sm-10">
 			<input type="text" [(ngModel)]="name" name="name" class="form-control">
 		</div>
-		<div class="form-group">
-			<label>Username</label>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 form-control-static">Username</label>
+		<div class="col-sm-10">
 			<input type="text" [(ngModel)]="username" name="username" class="form-control">
 		</div>
-		<div class="form-group">
-			<label>Email</label>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 form-control-static">Email</label>
+		<div class="col-sm-10">
 			<input type="text" [(ngModel)]="email" name="email" class="form-control">
 		</div>
+	</div>
 
-		<input type="submit" class="btn btn-primary" value="Submit">
-	</div> 
-
-	<div class="col-md-6">
-		<div class="form-check">
-			<label class="form-check-label">
-				<input class="form-check-input" type="checkbox" [(ngModel)]="isPasswordChange" name="isPasswordChange">
-				Change password?
-			</label>
+	<div class="form-group row">
+		<label class="col-sm-2 form-control-static p-t-15">Change password?</label>
+		<div class="col-sm-10">
+			<div *ngIf="isPasswordChange" (click)="isPasswordChange=false;" class="form-control-static">
+				<i class="glyphicon glyphicon-check glyphicon-2x"></i>
+			</div>
+			<div *ngIf="!isPasswordChange" (click)="isPasswordChange=true;" class="form-control-static">
+				<i class="glyphicon glyphicon-unchecked glyphicon-2x"></i>
+			</div>
 		</div>
-		<div *ngIf="isPasswordChange">
-			<div class="form-group">
-				<label>Password</label>
+	</div>
+	
+	<div *ngIf="isPasswordChange">
+		<div class="form-group row">
+			<label class="col-sm-2 form-control-static">Password</label>
+			<div class="col-sm-10">
 				<input type="password" [(ngModel)]="password" name="password" class="form-control">
 			</div>
+		</div>
 
-			<div class="form-group">
-				<label>Confirm password</label>
-				<input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" class="form-control">
+		<div class="form-group row">
+			<label class="col-sm-2 form-control-static">Confirm password</label>
+			<div class="col-sm-10">
+				<input type="password" [(ngModel)]="newPassword" name="newPassword" class="form-control">
 			</div>
 		</div>
+	</div>
+	
+	<div class="col-sm-2 col-sm-offset-5">
+		<input type="submit" class="btn btn-primary btn-block btn-sm" value="Submit">
 	</div>
 </form>

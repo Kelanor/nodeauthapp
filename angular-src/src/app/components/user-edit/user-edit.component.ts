@@ -17,8 +17,8 @@ export class UserEditComponent implements OnInit {
 	email: String;
 
 	isPasswordChange: boolean = false;
-	password: String;
-	confirmPassword: String;
+	password: String = "";
+	newPassword: String = "";
 
   	constructor(private validateService: ValidateService,
   				private userService: UsersService,
@@ -35,7 +35,7 @@ export class UserEditComponent implements OnInit {
 				this.username = user.username;
 				this.email = user.email;
 
-				console.log(user);
+				//console.log(user);
 			},
 			err => {
 				console.error(err);
@@ -47,23 +47,34 @@ export class UserEditComponent implements OnInit {
   	}
 
   	onEditSubmit() {
-  		const user = {
+  		var user = {
 			name: this.name,
 			username: this.username,
 			email: this.email,
-			password: this.password
+			changePassword: this.isPasswordChange,
+			oldPassword: this.password,
+			newPassword: this.newPassword
 		};
 
-		if (!this.validateService.validateRegister(user)) {
-			//console.error("Please fill in all fields");
-			this.flashMessagesService.show("Please fill in all fields", { cssClass: 'alert-danger', timeout: 3000});
-			return false;
-		}
-
 		if (!this.validateService.validateEmail(user.email)) {
-			//console.error("Please use a valid email");
 			this.flashMessagesService.show("Please use a valid email", { cssClass: 'alert-danger', timeout: 3000});
 			return false;
 		}
+
+		if (this.isPasswordChange) {
+			if (this.password == "" || this.newPassword == "") {
+				this.flashMessagesService.show("Please fill all fields", { cssClass: 'alert-danger', timeout: 3000});
+				return false;
+			}
+		}
+
+		//console.log("Register new user...");
+		this.userService.editUser(this.id, user).subscribe(data => {
+			if (data.success) {
+				this.flashMessagesService.show("User edited!", { cssClass: 'alert-success', timeout: 3000});
+			} else {
+				this.flashMessagesService.show(data.msg, { cssClass: 'alert-danger', timeout: 3000});
+			}
+		});
   	}
 }

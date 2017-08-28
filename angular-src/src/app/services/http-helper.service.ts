@@ -27,4 +27,12 @@ export class HttpHelperService {
   				{ headers: headers })
   			.map(res => res.json());
   	}
+
+    put(url, id, body, headers) {
+      return this.http.put(
+          this.serverUrl + url + id,          
+          body,
+          { headers: headers })
+        .map(res => res.json());
+    }
 }

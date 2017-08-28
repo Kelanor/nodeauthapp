@@ -28,4 +28,11 @@ export class UsersService {
 
 		return this.httpHelper.get('/users/profile', this.authService.headers);
 	}
+
+	editUser(id, user) {
+		this.authService.loadToken();
+		this.authService.loadAuthHeaders();
+
+		return this.httpHelper.put('/users/', id, user, this.authService.headers);
+	}
 }

@@ -14,14 +14,13 @@ router.post('/register', (req, res, next) => {
 		password: req.body.password,
 	});
 
-	console.log (newUser);
 	User.addUser(newUser, (err, user) => {
 		if (err) {
 			res.json({ success: false,  msg: 'Failed to register user' });
 		} else {
 			res.json({ success: true });
 		}
-	})
+	});
 })
 
 // Authenticate
@@ -85,18 +84,58 @@ router.get('/list', passport.authenticate('jwt', {session: false}), (req, res, n
 	})
 })
 
-// List
+// Get user
 router.get('/:id', passport.authenticate('jwt', {session: false}), (req, res, next) => {
 	User.getUserById(req.params.id, function (error, user) {
 		if (error) 
 			throw error;
 
 		res.json({
-				id: user._id,
-				name: user.name,
-				username: user.username,
-				email: user.email
+			id: user._id,
+			name: user.name,
+			username: user.username,
+			email: user.email
+		});
+	})
+})
+
+// Edit user
+router.put('/:id', passport.authenticate('jwt', {session: false}), (req, res, next) => {
+	User.getUserById(req.params.id, function (error, user) {
+		if (error) 
+			throw error;
+
+		user.name = req.body.name;
+		user.username = req.body.username;
+		user.email = req.body.email;
+
+		if (req.body.changePassword) {
+			User.comparePassword(req.body.oldPassword, user.password, (err, isMatch) => {
+				if (err)
+					throw err;
+
+				if (!isMatch) {
+					return res.json({ success: false,  msg: 'Wrong password' });
+				}
+
+				user.password = req.body.newPassword;
+				User.editUserWithPassword(user, (err, user) => {
+					if (err) {
+						return res.json({ success: false,  msg: 'Failed to edit user' });
+					}
+
+					return res.json({ success: true });
+				});
 			});
+		} else {
+			User.editUser(user, (err, user) => {
+				if (err) {
+					return res.json({ success: false,  msg: 'Failed to edit user' });
+				}
+
+				return res.json({ success: true });
+			});
+		}
 	})
 })
 

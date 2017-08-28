@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+	margin-top: 70px;
+}
+
+.glyphicon-2x {
+	font-size: 1.5em;
+}
+
+.p-t-15 {
+	padding-top: 15px !important;
+}
